@@ -1,0 +1,19 @@
+{% extends "weird_blog/base.html" %}
+
+{% block content %}
+
+<p>
+    <a href="{% url 'weird_blog:topic' topic.id %}">{{ topic.text }}</a>
+</p>
+
+<p>
+    Edit Entry:
+</p>
+
+<form action="{% url 'weird_blog:edit_entry' entry.id %}" method="post">
+    {% csrf_token %}
+    {{form.as_div}}
+    <button name="Submit">Save Changes</button>
+</form>
+
+{% endblock content %}

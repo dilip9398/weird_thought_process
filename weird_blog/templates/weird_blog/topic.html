@@ -1,0 +1,28 @@
+{% extends 'weird_blog/base.html' %}
+
+{% block content %}
+
+<p>Topic: {{ topic.text }}</p>
+
+<p>Entries:</p>
+<p>
+    <a href="{% url 'weird_blog:new_entry' topic.id %}">Add New Entry</a>
+</p>
+<ul>
+    {% for entry in entries %}
+
+
+
+    <li>
+        <p>{{ entry.date_added|date:"M d, Y H:i" }}</p>
+        <article>{{ entry.text | linebreaks }}</article>
+        <p>
+            <a href="{% url 'weird_blog:edit_entry' entry.id %}">Edit entry</a>
+        </p>
+    </li>
+    {% empty %}
+    <li>There are no entries for this topic yet.</li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

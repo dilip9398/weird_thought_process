@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weird thought process</title>
+
+</head>
+<style>
+    body {
+        background-color: rgb(150, 187, 219);
+    }
+
+    li {
+        list-style: none;
+        align-items: center;
+        margin-left: 59;
+
+    }
+</style>
+
+<body>
+    <nav>
+        <li>
+            <a href="{% url 'weird_blog:index' %}">weird blog</a>
+            <a href="{% url 'weird_blog:topics' %}">Topics</a>
+        </li>
+    </nav>
+    <main>
+        <div>
+            <h1>Welcome to the Weird thought Process block</h1>
+        </div>
+    </main>
+</body>
+
+</html>
+{% block content %}{% endblock content %}

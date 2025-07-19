@@ -1,0 +1,42 @@
+# Python
+*.pyc
+__pycache__/
+venv/
+env/
+wb_env/  # Your virtual environment folder name
+
+# Django
+db.sqlite3  # SQLite database file
+/media/     # User-uploaded media files
+/staticfiles/ # Collected static files (if you use collectstatic)
+.env        # Environment variables file (if used for settings)
+*.log       # Log files
+
+# IDE/Editor specific files
+.idea/      # PyCharm project files
+.vscode/    # VS Code settings
+*.sublime-project
+*.sublime-workspace
+
+# Operating System files
+.DS_Store   # macOS specific files
+Thumbs.db   # Windows specific files
+
+# Test/Coverage reports
+.coverage
+.cache/
+htmlcov/
+.pytest_cache/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Jupyter Notebook files (if you use them)
+.ipynb_checkpoints
+
+# Any other sensitive local settings (e.g., if you have a local_settings.py)
+# If you create a local_settings.py for sensitive data not committed to Git,
+# make sure it's ignored. For example:
+# myproject/local_settings.py

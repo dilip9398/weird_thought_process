@@ -1,0 +1,18 @@
+{% extends 'weird_blog/base.html' %}
+
+{% block content %}
+
+<p>Topics</p>
+<ul>
+    {% for topic in topics %}
+    <li>
+        <a href="{% url 'weird_blog:topic' topic.id %}">{{ topic.text}}</a>
+    </li>
+    {% empty %}
+    <li>No topics have been added yet.</li>
+    {% endfor %}
+</ul>
+
+<a href="{%url 'weird_blog:new_topic' %}">Add the new topic</a>
+
+{% endblock content %}
