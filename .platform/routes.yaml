@@ -1,9 +1,7 @@
 "https://{default}/":
   type: upstream
-  upstream: "werid_blog:http"
+  upstream: "weird_blog:http"
 
 "https://www.{default}/":
   type: redirect
   to: "https://{default}/"
-
-      

@@ -11,38 +11,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-from platformshconfig import Config 
-
-config = Config()
-if config.is_valid_platform():
-    ALLOWED_HOSTS = [
-        'main-bvxea6i-7bgq4yk4hafmq.us-2.platformsh.site',
-    '.platformsh.site',
-    ]
-else:
-    ALLOWED_HOSTS = []
-
-    if config.appDir:
-        STATIC_ROOT = Path(config.appDir) / 'static'
-    if config.projectEntropy:
-        SECRET_KEY = config.projectEntropy
-
-    if not config.in_build():
-        db_setting = config.credentials('database')
-        DATABASES = {
-            'default' : {
-                'ENGINE' : 'django.db.backends.mysql',
-                'NAME' : db_setting['path'],
-                'USER' : db_setting['username'],
-                'PASSWORD' : db_setting['password'],
-                'HOST' : db_setting['host'],
-                'PORT' : db_setting['port'],
-            },
-        }
+from platformshconfig import Config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -53,7 +25,7 @@ SECRET_KEY = 'django-insecure-9w4409t_jcd+0px%w5nye_k87(re83bv30f-g7uszefr6zdzrr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -151,6 +123,36 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# --- Platform.sh configuration ---
+
+config = Config()
+
+if config.is_valid_platform():
+    # Override default settings with Platform.sh-specific values.
+    print("Platform.sh environment detected. Overriding settings.")
+
+    # Set the hostnames, disable debugging, and set the secret key.
+    ALLOWED_HOSTS.extend(config.get_all_domains())
+    DEBUG = False
+    if config.project_entropy:
+        SECRET_KEY = config.project_entropy
+
+    # Configure the database. The 'in_build' check is important to avoid
+    # trying to connect to services during the build hook.
+    if not config.in_build():
+        creds = config.credentials('database')
+        DATABASES['default'] = {
+            'ENGINE': f"django.db.backends.{creds['scheme']}",
+            'NAME': creds['path'],
+            'USER': creds['username'],
+            'PASSWORD': creds['password'],
+            'HOST': creds['host'],
+            'PORT': creds['port'],
+        }
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

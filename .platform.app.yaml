@@ -1,4 +1,4 @@
-name: "werid_blog"
+name: "weird_blog"
 type: "python:3.13"
 
 relationships:
