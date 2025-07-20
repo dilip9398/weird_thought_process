@@ -15,7 +15,10 @@ from platformshconfig import Config
 
 config = Config()
 if config.is_valid_platform():
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = [
+        'main-bvxea6i-7bgq4yk4hafmq.us-2.platformsh.site',
+    '.platformsh.site',
+    ]
     ALLOWED_HOSTS.append('.platformsh.site')
 
     if config.appDir:
