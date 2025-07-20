@@ -11,6 +11,29 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from platformshconfig import Config 
+
+config = Config()
+if config.is_valid_platform():
+    ALLOWED_HOSTS.append('.platformsh.site')
+
+    if config.appDir:
+        STATIC_ROOT = Path(config.appDir) / 'static'
+    if config.projectEntropy:
+        SECRET_KEY = config.projectEntropy
+
+    if not config.in_build():
+        db_setting = config.credentials('database')
+        DATABASES = {
+            'default' : {
+                'ENGINE' : 'django.db.backends.postgresql',
+                'NAME' : db_setting['path'],
+                'USER' : db_setting['username'],
+                'PASSWORD' : db_setting['password'],
+                'HOST' : db_setting['host'],
+                'PORT' : db_setting['port'],
+            },
+        }
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

@@ -1,0 +1,11 @@
+"https://{default}/":
+  type: upstream
+  upstream: "wb_project:http"
+
+"https://www.{default}/":
+  type: redirect
+  to: "https://{default}/"
+
+db:
+  type: postgresql:12
+  disk: 1024
