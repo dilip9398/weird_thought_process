@@ -19,7 +19,7 @@ if config.is_valid_platform():
         'main-bvxea6i-7bgq4yk4hafmq.us-2.platformsh.site',
     '.platformsh.site',
     ]
-    ALLOWED_HOSTS.append('.platformsh.site')
+    # ALLOWED_HOSTS.append('.platformsh.site')
 
     if config.appDir:
         STATIC_ROOT = Path(config.appDir) / 'static'
