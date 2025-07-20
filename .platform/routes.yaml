@@ -5,7 +5,3 @@
 "https://www.{default}/":
   type: redirect
   to: "https://{default}/"
-
-db:
-  type: mysql:0.5.3
-  disk: 1024
