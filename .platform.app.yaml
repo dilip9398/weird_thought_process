@@ -1,8 +1,8 @@
-name: "Werid Blog"
+name: "werid_blog"
 type: "python:3.13"
 
 relationships:
-  database: "db:postgresql"
+  database: "db:mysql"
 
 web:
   upstream:
