@@ -1,6 +1,6 @@
 "https://{default}/":
   type: upstream
-  upstream: "wb_project:http"
+  upstream: "werid_blog:http"
 
 "https://www.{default}/":
   type: redirect
