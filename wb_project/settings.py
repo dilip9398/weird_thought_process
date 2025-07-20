@@ -19,7 +19,8 @@ if config.is_valid_platform():
         'main-bvxea6i-7bgq4yk4hafmq.us-2.platformsh.site',
     '.platformsh.site',
     ]
-    # ALLOWED_HOSTS.append('.platformsh.site')
+else:
+    ALLOWED_HOSTS = []
 
     if config.appDir:
         STATIC_ROOT = Path(config.appDir) / 'static'
@@ -30,7 +31,7 @@ if config.is_valid_platform():
         db_setting = config.credentials('database')
         DATABASES = {
             'default' : {
-                'ENGINE' : 'django.db.backends.postgresql',
+                'ENGINE' : 'django.db.backends.mysql',
                 'NAME' : db_setting['path'],
                 'USER' : db_setting['username'],
                 'PASSWORD' : db_setting['password'],
