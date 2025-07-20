@@ -132,10 +132,9 @@ config = Config()
 
 if config.is_valid_platform():
     # Override default settings with Platform.sh-specific values.
-    print("Platform.sh environment detected. Overriding settings.")
-
     # Set the hostnames, disable debugging, and set the secret key.
-    ALLOWED_HOSTS.extend(config.get_all_domains())
+    ALLOWED_HOSTS.extend(config.domains.keys())
+    CSRF_TRUSTED_ORIGINS = [f"https://{domain}" for domain in config.domains.keys()]
     DEBUG = False
     if config.project_entropy:
         SECRET_KEY = config.project_entropy
