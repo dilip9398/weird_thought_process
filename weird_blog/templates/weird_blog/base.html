@@ -4,35 +4,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weird thought process</title>
+    <title>Weird Blog</title>
+    <meta name="description" content="exploded Thought process">
+    <meta name="keywords" content="blog, explode, insanity">
 
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 </head>
 <style>
     body {
-        background-color: rgb(150, 187, 219);
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%), radial-gradient(at top center, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.40) 120%) #989898;
+        background-blend-mode: multiply, multiply;
     }
 
-    li {
-        list-style: none;
-        align-items: center;
-        margin-left: 59;
+    a {
+        color: #382828;
+        text-decoration: none;
+        font-weight: bold;
 
     }
 </style>
 
+
 <body>
-    <nav>
-        <li>
-            <a href="{% url 'weird_blog:index' %}">weird blog</a>
-            <a href="{% url 'weird_blog:topics' %}">Topics</a>
-        </li>
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+        <div class="container-fluid">
+            <a href="{%url 'weird_blog:index' %}" class="navbar-brand text-decoration-none">Weird Blog </a>
+        </div>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+            </span></button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ms-auto mb-8 mb-md-50">
+                <li class="nav-item">
+                    <a href="{% url 'weird_blog:topics' %}" class="nav-link">Topics</a>
+                </li>
+
+            </ul>
+
+
+
+            <!-- Account Related links -->
+            <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <span class="navbar-text me-2">Hello, {{user.username }}.</span>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'accounts:register' %}">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'accounts:login' %}">Log in</a>
+                </li>
+                {% endif %}
+            </ul>
+            <!-- End of the account related links -->
+
+            {% if user.is_authenticated %}
+            <form action="{% url 'accounts:logout' %}" method="post">
+                {% csrf_token %}
+                <button name="submit" class="btn btn-outline-secondary btn-sm">Log out</button>
+            </form>
+            {% endif %}
+        </div>
     </nav>
-    <main>
+
+    <main class="container">
+        <div class="pb-2 mb-2 border-bottom">
+            {% block page_header %} {% endblock page_header %}
+        </div>
         <div>
-            <h1>Welcome to the Weird thought Process block</h1>
+
+            {% block content %} {% endblock content %}
         </div>
     </main>
+
+    <footer class="text-center text-muted py-4 mt-5 border-top bg-light">
+        <div>
+            <small>© {% now "Y" %} Weird Blog. All rights reserved to Dilip</small>
+        </div>
+    </footer>
+
+
+
 </body>
 
 </html>
-{% block content %}{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+<p>
+    <a href="{% url 'weird_blog:index' %}">Weird Blog</a>
+    <a href="{% url 'weird_blog:topics' %}">Topics</a>
+    {% if user.is_authenticated %}
+    <br>
+    Hello, {{ user.username}}
+    {% else %}
+    <a href="{% url 'accounts:register' %}">Register</a>
+    <a href="{% url 'accounts:login' %}">login</a>
+    {% endif %}
+</p>
+
+
+{% if user.is_authenticated %}
+<hr>
+<form method="post" action="{% url 'accounts:logout' %}">
+    {% csrf_token %}
+    <button name="submit">Log out</button>
+</form>
+{% endif %} -->

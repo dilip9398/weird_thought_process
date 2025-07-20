@@ -1,7 +1,34 @@
 {% extends 'weird_blog/base.html' %}
+<style>
+    body {
+        background: linear-gradient(120deg, #ffefba 0%, #ffffff 100%);
+    }
+</style>
 
 {% block content %}
+<div class="p-3 mb-4 bg-light border rounded-3">
+    <div class="container-fluid py-4">
+        <h1 class="display-3">Share your Thought Process</h1>
+        <p class="lead">Welcome to the Weird Thought Process!</p>
+        <p class="lead">
+            Dive into a space where the ordinary flips itself on its head, and the unusual is just the start. Here, we
+            celebrate wild questions, quirky perspectives, and outlandish ideas. Whether you’re brainstorming the next
+            big paradox, wondering about the world’s strangest mysteries, or just seeking a laugh, you’re in the right
+            place!
+        </p>
+        <p class="lead">
+            🧠 Let your mind wander.<br>
+            💡 Share a peculiar topic.<br>
+            🤪 Embrace the joy of thinking differently.<br>
+        </p>
+        <p class="lead">
+            Explore our topics, add your own weird thoughts, or simply enjoy reading minds unleashed. Here, every
+            idea—no matter how odd—has a home.<br>
+            <strong>Ready to get your weird on? Start reading, start contributing, and above all—have fun!</strong>
+        </p>
+        <a class="btn btn-primary btn-lg mt-1" href="{% url 'accounts:register' %}">Register &raquo;</a>
+        <a class="btn btn-primary btn-lg mt-2" href="{% url 'accounts:login' %}">Login in &raquo;</a>
+    </div>
+</div>
 
-<p>Welcome to the weird thought process</p>
-<p>Thinking the weird thought and having fun</p>
 {% endblock content %}

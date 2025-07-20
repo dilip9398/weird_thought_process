@@ -39,7 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'weird_blog'
+    #Features
+    'weird_blog',
+    'accounts',
+    #Third parts apps
+    'django_bootstrap5',
+
 ]
 
 MIDDLEWARE = [
@@ -123,3 +128,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# my settings
+LOGIN_REDIRECT_URL = 'weird_blog:index'
+LOGOUT_REDIRECT_URL = 'weird_blog:index'
+LOGIN_URL = 'accounts:login'
