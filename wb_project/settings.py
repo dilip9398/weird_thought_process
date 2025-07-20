@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from platformshconfig import Config
+from urllib.parse import urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -133,8 +134,10 @@ config = Config()
 if config.is_valid_platform():
     # Override default settings with Platform.sh-specific values.
     # Set the hostnames, disable debugging, and set the secret key.
-    ALLOWED_HOSTS.extend(config.domains.keys())
-    CSRF_TRUSTED_ORIGINS = [f"https://{domain}" for domain in config.domains.keys()]
+    # Get all domains from the routes and add them to ALLOWED_HOSTS and CSRF_TRUSTED_ORIGINS.
+    domains = [urlparse(url).hostname for url in config.routes().keys()]
+    ALLOWED_HOSTS.extend(domains)
+    CSRF_TRUSTED_ORIGINS = [f"https://{domain}" for domain in domains]
     DEBUG = False
     if config.project_entropy:
         SECRET_KEY = config.project_entropy
