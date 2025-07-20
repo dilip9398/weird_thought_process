@@ -2,7 +2,7 @@ name: "werid_blog"
 type: "python:3.13"
 
 relationships:
-  database: "db:mysql"
+  database: "db:postgresql"
 
 web:
   upstream:
