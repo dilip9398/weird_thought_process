@@ -24,6 +24,9 @@ mounts:
   "logs":
     source: local
     source_path: logs
+  "sessions":
+    source: local
+    source_path: sessions
 
 # The hooks executed at the various points in the lifecycle of the application.
 

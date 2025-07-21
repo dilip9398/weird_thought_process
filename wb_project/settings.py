@@ -148,3 +148,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'weird_blog:index'
 LOGOUT_REDIRECT_URL = 'weird_blog:index'
 LOGIN_URL = 'accounts:login'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+SESSION_FILE_PATH = os.path.join(BASE_DIR, 'sessions')
