@@ -9,22 +9,32 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 
 
 from pathlib import Path
-from urllib.parse import urlparse
 import os
+from platformshconfig import Config
+from urllib.parse import urlparse
 
 # Base directory (same as BASE_DIR)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+config = Config()
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'replace-this-with-a-very-secure-key')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'replace-this-with-a-secure-key')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# Local development settings
 DEBUG = False
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = []
 
-ALLOWED_HOSTS = ['madmax551.pythonanywhere.com']
-
-# CSRF trusted origins
-CSRF_TRUSTED_ORIGINS = ['https://madmax551.pythonanywhere.com']
+if config.is_valid_platform():
+    if not config.in_build():
+        try:
+            domains = [urlparse(url).hostname for url in config.routes().keys()]
+            ALLOWED_HOSTS += domains
+            CSRF_TRUSTED_ORIGINS = [f"https://{domain}" for domain in domains]
+        except Exception:
+            pass
+    SECRET_KEY = getattr(config, "project_entropy", SECRET_KEY)
 
 # Application definition
 INSTALLED_APPS = [
@@ -74,14 +84,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wb_project.wsgi.application'
 
-# Database
-# Use SQLite for PythonAnywhere free tier
+# Database: Use SQLite for local development
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('DB_NAME', 'main'),
+        'USER': os.environ.get('DB_USER', 'user'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '3306'),
     }
 }
+if config.is_valid_platform() and not config.in_build():
+    creds = config.credentials('database')
+    DATABASES['default'] = {
+        'ENGINE': f"django.db.backends.{creds['scheme']}",
+        'NAME': creds['path'],
+        'USER': creds['username'],
+        'PASSWORD': creds['password'],
+        'HOST': creds['host'],
+        'PORT': creds['port'],
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -107,11 +130,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Media files (if you use them)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default auto key field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -122,5 +145,5 @@ LOGOUT_REDIRECT_URL = 'weird_blog:index'
 LOGIN_URL = 'accounts:login'
 
 # Remove Platform.sh session file path if not needed
-# SESSION_ENGINE = 'django.contrib.sessions.backends.file'
-# SESSION_FILE_PATH = os.path.join(BASE_DIR, 'sessions')
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+SESSION_FILE_PATH = os.path.join(BASE_DIR, 'sessions')
