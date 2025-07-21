@@ -134,10 +134,16 @@ config = Config()
 if config.is_valid_platform():
     # Override default settings with Platform.sh-specific values.
     # Set the hostnames, disable debugging, and set the secret key.
-    # Get all domains from the routes and add them to ALLOWED_HOSTS and CSRF_TRUSTED_ORIGINS.
-    domains = [urlparse(url).hostname for url in config.routes().keys()]
-    ALLOWED_HOSTS.extend(domains)
-    CSRF_TRUSTED_ORIGINS = [f"https://{domain}" for domain in domains]
+    # Only access routes at runtime, not during build/import.
+    import os
+    domains = []
+    if not config.in_build():
+        try:
+            domains = [urlparse(url).hostname for url in config.routes().keys()]
+        except Exception:
+            domains = []
+        ALLOWED_HOSTS.extend(domains)
+        CSRF_TRUSTED_ORIGINS = [f"https://{domain}" for domain in domains]
     DEBUG = False
     if config.project_entropy:
         SECRET_KEY = config.project_entropy
