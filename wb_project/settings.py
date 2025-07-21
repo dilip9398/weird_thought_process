@@ -44,8 +44,8 @@ if config.is_valid_platform():
     # Disable debug and set secret key from entropy
     DEBUG = False
 
-    if config.project_entropy:
-        SECRET_KEY = config.project_entropy
+    # Use project_entropy if it exists, otherwise keep the existing SECRET_KEY
+    SECRET_KEY = getattr(config, "project_entropy", SECRET_KEY)
 
 # Application definition
 INSTALLED_APPS = [
